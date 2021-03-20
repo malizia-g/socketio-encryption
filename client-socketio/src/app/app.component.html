@@ -1,10 +1,43 @@
-<div *ngFor="let message of messageList">
-
+<div>
+    <input (keyup)="$event.keyCode == 13 && setEncryptionKey(encKey)" #encKey />
+    <button (click)="setEncryptionKey(encKey)">Set Encryption Key</button>
+    ecryption key: {{encryptionKey}}
 </div>
+<hr>
+<div>
+    <button (click)="getRSAHello()">GET RSA HELLO MESSAGE</button>
+    <div>mine rsakey: {{rsaHello|json}}</div>
+</div>
+<div>
+    <input (keyup)="$event.keyCode == 13 && setOtherRSAPublic(otherRsaKey)" #otherRsaKey />
+    <button (click)="setOtherRSAPublic(otherRsaKey)">Set Other RSA KEY</button>
+    <span *ngIf="otherRSAHello != undefined">Other RSA Setted</span>
+</div>
+<hr>
 
-<input  (keyup)="$event.keyCode == 13 && sendMessage(message)" #message/>
-<button (click)="sendMessage(message)">Send Message</button>
+<!--Questa form usa dei radio button per scegliere l'algoritmo di cifratura-->
+<form #myForm="ngForm" (submit)="sendMessage(myForm.value)" novalidate> 
+    <div>
+       <input id="cesar" type="radio" value="cesar" name="messageType" ngModel>
+       <label  for="cesar">Cesar</label>
+    </div>
+ 
+    <div>
+       <input id="t-des" type="radio" value="t-des" name="messageType" ngModel>
+       <label for="t-des">Triple Des</label>
+    </div>
 
+    <div>
+        <input id="rsa" type="radio" value="rsa" name="messageType" ngModel>
+        <label for="rsa">RSA</label>
+     </div>
+    
+    <input type="text" id="message"  [(ngModel)]="message" name="message">
+
+    <button type="submit" >Encrypt</button>
+ </form><!-- Form ends -->
+
+ <hr>
 
 <div *ngFor="let message of messageList">
     {{message}}
